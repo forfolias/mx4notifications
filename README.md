@@ -19,23 +19,17 @@ Get haptic feedback on your Logitech MX Master 4 mouse whenever you receive desk
 
 ## Installation
 
-1. Clone the repository:
+1. Create and activate virtual environment:
 
 ```bash
-git clone https://github.com/lukasfri/mx4notifications.git
-cd mx4notifications
+python3 -m venv .venv --system-site-packages
+source .venv/bin/activate
 ```
 
-2. Install dependencies using pdm:
+2. Install dependencies using pip:
 
 ```bash
-pdm install
-```
-
-Or using pip:
-
-```bash
-pip install hid dbus-python pygobject
+pip install -r requirements.txt
 ```
 
 ## Usage
@@ -45,7 +39,7 @@ pip install hid dbus-python pygobject
 Run the watcher to receive haptic feedback on notifications:
 
 ```bash
-pdm run python src/watch.py
+python src/watch.py
 ```
 
 The script will:
@@ -53,7 +47,7 @@ The script will:
 - Automatically detect and connect to your MX Master 4 mouse
 - Monitor D-Bus for incoming notifications
 - Trigger haptic feedback whenever a notification appears
-- Run continuously until stopped with Ctrl+C
+- Run continuously on system tray until stopped
 
 ### Testing
 
@@ -65,13 +59,11 @@ notify-send "Test Notification" "You should feel vibration on your mouse!"
 
 ### Testing Haptic Patterns
 
-Explore different haptic feedback patterns:
+Explore different haptic feedback patterns [1-15] using the system tray menu or the command line argument `--vibration`.
 
 ```bash
-pdm run python src/mx_master_4.py
+python src/watch.py --vibration 11
 ```
-
-This demo cycles through 15 different haptic patterns with 3-second intervals to help you find your preferred feedback style.
 
 ## How It Works
 
