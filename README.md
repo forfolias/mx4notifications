@@ -77,6 +77,13 @@ This demo cycles through 15 different haptic patterns with 3-second intervals to
 
 The application uses `dbus-monitor` to listen for notifications on the D-Bus session bus. When a notification is detected on the `org.freedesktop.Notifications` interface, it sends a HID++ command to the MX Master 4 to trigger its built-in haptic motor.
 
+If both USB receiver and Bluetooth are connected, the app prefers USB by default. You can force the connection mode by setting `MX4_CONNECTION`:
+
+- `MX4_CONNECTION=bluetooth`
+- `MX4_CONNECTION=usb`
+
+Bluetooth uses a WebHID-style report payload for haptic effects, inspired by [mx-master-4-webhid](https://github.com/mario-gutierrez/mx-master-4-webhid).
+
 This works with any application that sends notifications through the standard freedesktop.org notification specification, including:
 
 - System notifications

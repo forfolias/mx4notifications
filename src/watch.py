@@ -1,8 +1,8 @@
 import logging
+import os
 import subprocess
-import threading
 
-from mx_master_4 import FunctionID, MXMaster4
+from mx_master_4 import MXMaster4
 
 
 def monitor_notifications(device):
@@ -26,7 +26,7 @@ def monitor_notifications(device):
                 # When we see a Notify method call, trigger haptic
                 if "member=Notify" in line or "method call" in line.lower():
                     try:
-                        device.hidpp(FunctionID.Haptic, 0)
+                        device.haptic(0)
                         logging.info("✓ Haptic feedback triggered!")
                     except Exception as e:
                         logging.error("Failed to trigger haptic: %s", e)
@@ -38,7 +38,14 @@ def monitor_notifications(device):
 def main():
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
-    device = MXMaster4.find()
+    preference = (os.getenv("MX4_CONNECTION") or "auto").lower()
+    if preference == "bluetooth":
+        device = MXMaster4.find(prefer_bluetooth=True)
+    elif preference == "usb":
+        device = MXMaster4.find(prefer_bluetooth=False)
+    else:
+        device = MXMaster4.find(prefer_bluetooth=False)
+
     if not device:
         logging.error("MX Master 4 not found!")
         exit(1)
